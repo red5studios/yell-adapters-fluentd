@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "yell-adapters-fluentd"
-  s.version = "1.0.0"
+  s.version = "1.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jason Smith"]
@@ -28,7 +28,8 @@ Gem::Specification.new do |s|
     "lib/yell-adapters-fluentd.rb",
     "lib/yell/adapters/fluentd.rb",
     "spec/spec_helper.rb",
-    "spec/yell/adapters/fluentd_spec.rb"
+    "spec/yell/adapters/fluentd_spec.rb",
+    "yell-adapters-fluentd.gemspec"
   ]
   s.homepage = "http://github.com/red5studios/yell-adapters-fluentd"
   s.licenses = ["MIT"]
