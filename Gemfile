@@ -1,7 +1,6 @@
 source "https://rubygems.org"
 gem "yell", "~> 2.0"
 gem "fluent-logger", "~> 0.4.3"
-gem "connection_pool"
 
 group :development do
   gem "rspec", "~> 2.8.0"
