@@ -1,13 +1,13 @@
 # encoding: utf-8
 require 'yell'
 require 'fluent-logger'
+require 'connection_pool'
 
 module Yell
 	module Adapters
 		class Fluentd < Yell::Adapters::Base
 
 			attr_accessor :tag, :host, :port
-			attr_accessor :log
 
 			setup do |options|
 				@host = (options[:host] || 'localhost')
@@ -18,7 +18,7 @@ module Yell
 			end
 
 			close do
-				@log.close if @log
+
 			end
 
 			write do |event|
@@ -35,11 +35,13 @@ module Yell
 					'_pid' => event.pid
 				}, *event.messages )
 
-				log.post(tag, message)
+				$fluent_logger.with do |log|
+					log.post(tag, message)
+				end
 			end
 
 			def connect
-				@log ||= Fluent::Logger::FluentLogger.new(nil, :host => (@host || 'localhost'), :port => (@port || 24224))
+				$fluent_logger ||= ConnectionPool::Wrapper.new(size: 5, timeout: 3) { Fluent::Logger::FluentLogger.new(nil, :host => (@host || 'localhost'), :port => (@port || 24224)) }
 			end
 
 			def format( *messages )

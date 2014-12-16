@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "yell-adapters-fluentd"
-  s.version = "1.0.1"
+  s.version = "1.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jason Smith"]
@@ -39,6 +39,7 @@ Gem::Specification.new do |s|
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
+    s.add_runtime_dependency('connection_pool')
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<yell>, ["~> 2.0"])
