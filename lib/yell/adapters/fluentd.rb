@@ -22,24 +22,34 @@ module Yell
 			end
 
 			write do |event|
-				connect
+				begin
+					connect
 
-				message = format({
-					'version' => '1.0',
-					'level' => Severities[event.level],
-					'timestamp' => event.time.to_f,
-					'host' => event.hostname,
-					'file' => event.file,
-					'line' => event.line,
-					'_method' => event.method,
-					'_pid' => event.pid
-				}, *event.messages )
+					if @log
+						message = format({
+							'version' => '1.0',
+							'level' => Severities[event.level],
+							'timestamp' => event.time.to_f,
+							'host' => event.hostname,
+							'file' => event.file,
+							'line' => event.line,
+							'_method' => event.method,
+							'_pid' => event.pid
+						}, *event.messages )
 
-				log.post(tag, message)
+						@log.post(tag, message)
+					end
+				rescue => e
+					@log = nil
+				end
 			end
 
 			def connect
-				@log ||= Fluent::Logger::FluentLogger.new(nil, :host => (@host || 'localhost'), :port => (@port || 24224))
+				begin
+					@log ||= Fluent::Logger::FluentLogger.new(nil, :host => (@host || 'localhost'), :port => (@port || 24224))
+				rescue => e
+					# How do you log an error in the error logger?
+				end
 			end
 
 			def format( *messages )
